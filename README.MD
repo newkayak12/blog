@@ -1,4 +1,4 @@
-#SMALL_PROJECT BLOG
+# SMALL_PROJECT BLOG
 
 ------------
 ```
