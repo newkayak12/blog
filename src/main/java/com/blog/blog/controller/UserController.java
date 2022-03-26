@@ -18,6 +18,11 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
 
+    /**
+     * 회원 가입
+     * @param data
+     * @return
+     */
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     public ResponseContainer signUp(@RequestBody Map<String,Object> data){
         Map<String,Object> result = null;
@@ -29,6 +34,12 @@ public class UserController {
         return new ResponseContainer(200, "가입에 성공하였습니다.", result);
     }
 
+    /**
+     * 로그인
+     * @param userId
+     * @param userPassword
+     * @return
+     */
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
     public ResponseContainer signIn(@RequestParam String userId, @RequestParam String userPassword){
         Map<String,Object> result = null;
@@ -40,14 +51,24 @@ public class UserController {
         return new ResponseContainer(200, "로그인에 성공하였습니다.", result);
     }
 
+    /**
+     * 로그아웃
+     * @return
+     */
     @RequestMapping(value = "/signOut", method = RequestMethod.GET)
     public ResponseContainer signOut(){
         return new ResponseContainer(200, "", userService.signOut());
     }
 
+    /**
+     * 비밀번호 변경
+     * @param authorization
+     * @param data
+     * @return
+     */
     @RequestMapping(value = "/changePassword", method = RequestMethod.PATCH)
     @Auth
-    public ResponseContainer changePassword(@RequestHeader(value = "authorization") Object authorization,  @RequestBody Map<String,Object> data){
+    public ResponseContainer changePassword(@RequestHeader(value = "Authorization") Object authorization,  @RequestBody Map<String,Object> data){
         data.put("userNo",  ((Map<String,Object>) authorization).get("userNo"));
         Map<String, Object> result = null;
         try {
@@ -59,9 +80,15 @@ public class UserController {
         return new ResponseContainer(200, "비밀번호 변경에 성공했습니다.", result);
     }
 
+    /**
+     * 닉네임 변경
+     * @param authorization
+     * @param data
+     * @return
+     */
     @RequestMapping(value = "/changeNickname", method = RequestMethod.PATCH)
     @Auth
-    public ResponseContainer changeNickname(@RequestHeader(value = "authorization") Object authorization,  @RequestBody Map<String,Object> data){
+    public ResponseContainer changeNickname(@RequestHeader(value = "Authorization") Object authorization,  @RequestBody Map<String,Object> data){
         data.put("userNo",  ((Map<String,Object>) authorization).get("userNo"));
         Map<String,Object> result = null;
         try {

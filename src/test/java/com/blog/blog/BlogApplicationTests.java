@@ -55,5 +55,4 @@ class BlogApplicationTests {
         data.put("userNickname", "test2");
         log.warn("Result : {}", userController.changeNickname(token, data));
     }
-
 }

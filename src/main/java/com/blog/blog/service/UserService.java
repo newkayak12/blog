@@ -60,12 +60,18 @@ public class UserService {
                 .userLastSignedDate(new Date())
                 .build();
 
-        log.warn("BEFORE SIGNUP {}", user);
         userRepository.save(user);
 
         return tokenMaker(user);
     }
 
+    /**
+     * 로그인
+     * @param userId
+     * @param userPassword
+     * @return
+     * @throws ServiceException
+     */
     public Map<String, Object> signIn(String userId, String userPassword) throws ServiceException {
         User user = userRepository.findUserByUserId(userId);
         UserDto userDto = Mapper.userMapper(user);
@@ -80,6 +86,10 @@ public class UserService {
         return tokenMaker(user);
     }
 
+    /**
+     * 로그 아웃
+     * @return
+     */
     public Map<String,Object> signOut(){
         Map<String,Object> result = new HashMap<>();
         result.put("token","");
@@ -87,6 +97,12 @@ public class UserService {
         return result;
     }
 
+    /**
+     * 비밀번호 변경
+     * @param data
+     * @return
+     * @throws ServiceException
+     */
     public Map<String,Object> changePassword(Map<String, Object> data) throws ServiceException {
         Long userNo = Long.valueOf((Integer)data.get("userNo"));
         String userPassword = (String) data.get("userPassword");
@@ -106,6 +122,12 @@ public class UserService {
         return tokenMaker(user);
     }
 
+    /**
+     * 닉네임 변경
+     * @param data
+     * @return
+     * @throws ServiceException
+     */
     public Map<String, Object> changeNickname(Map<String, Object> data) throws ServiceException {
         Long userNo = Long.valueOf((Integer) data.get("userNo"));
         String userNickname = (String) data.get("userNickname");
