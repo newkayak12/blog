@@ -57,6 +57,8 @@ public class UserService {
                 .userRegDate(new Date())
                 .userLastSignedDate(new Date())
                 .build();
+
+        log.warn("USER? {}", user);
         userRepository.save(user);
 
         return tokenMaker(user);
@@ -69,7 +71,7 @@ public class UserService {
         if(Objects.isNull(userDto)){
             throw new ServiceException("아이디 혹은 비밀번호가 틀렸습니다.");
         }
-        if(bCryptPasswordEncoder.matches(userPassword, userDto.getUserPassword())){
+        if(!bCryptPasswordEncoder.matches(userPassword, userDto.getUserPassword())){
             throw  new ServiceException("아이디 혹은 비밀번호가 틀렸습니다.");
         }
 
@@ -83,9 +85,30 @@ public class UserService {
         return result;
     }
 
+    public Map<String,Object> changeUserInfo(Map<String, Object> data) throws ServiceException {
+        Long userNo = (Long) data.get("userNo");
+        String userPassword = (String) data.get("userPassword");
+        String newUserPassword = (String) data.get("newUserPassword");
+        User user = userRepository.findUserByUserNo(userNo);
+        UserDto userDto = Mapper.userMapper(user);
+
+        if(!bCryptPasswordEncoder.matches(userPassword, userDto.getUserPassword())){
+            throw new ServiceException("현재 비밀번호를 다시 확인해주세요");
+        }
+        if(bCryptPasswordEncoder.matches(newUserPassword,userDto.getUserPassword())){
+            throw new ServiceException("현재 비밀번호와 변경할 비밀번호가 동일합니다");
+        }
+
+        user.setUserPassword(bCryptPasswordEncoder.encode(newUserPassword));
+        userRepository.save(user);
+        return tokenMaker(user);
+    }
+
     public Map<String,Object> tokenMaker(User user){
 
         UserDto userDto = Mapper.userMapper(user);
+        log.warn("userDto ? {} ", userDto);
+        log.warn("SALT ? {}", Constants.SALT_VALUE);
         userDto.setUserPassword("");
         Map<String, Object> result = new HashMap<>();
         result.put("token", tokenManager.encrypt(userDto, Constants.SALT_VALUE));
@@ -93,4 +116,6 @@ public class UserService {
 
         return result;
     }
+
+
 }

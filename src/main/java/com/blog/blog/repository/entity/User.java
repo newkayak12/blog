@@ -1,8 +1,8 @@
 package com.blog.blog.repository.entity;
 
-import com.blog.blog.common.EntityListener.FetchWith;
 import com.blog.blog.common.EntityListener.UserLastSignListener;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -16,6 +16,8 @@ import java.util.*;
 @Builder
 @EqualsAndHashCode
 @EntityListeners(UserLastSignListener.class)
+@ToString
+@DynamicUpdate
 @Table(name = "user")
 public class User {
     @Id
@@ -36,7 +38,6 @@ public class User {
     @Column(name = "user_reg_date")
     private Date userRegDate;
 
-    @FetchWith
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "user_last_signed_date")
     private Date userLastSignedDate;

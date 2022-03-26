@@ -25,11 +25,13 @@ public class AuthAop {
         Object[] parameterValue = proceedingJoinPoint.getArgs();
         Parameter[] parameters = methodSignature.getMethod().getParameters();
         for(int i = 0; i<parameters.length; i++){
-            if(Objects.isNull(parameterValue[i])){
-                throw new SecurityException("잘못된 접근입니다.");
+            if(parameters[i].getName().equals("authorization")){
+                if(Objects.isNull(parameterValue[i])){
+                    throw new SecurityException("잘못된 접근입니다.");
+                }
+                parameterValue[i] = tokenManager.decrypt((String)parameterValue[i], Constants.SALT_VALUE);
+                break;
             }
-            parameterValue[i] = tokenManager.decrypt((String) parameterValue[i], Constants.SALT_VALUE);
-            break;
         }
 
         return proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs());

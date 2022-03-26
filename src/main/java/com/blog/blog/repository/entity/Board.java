@@ -27,7 +27,7 @@ public class Board {
     private String boardTitle;
 
     @Lob
-    @Column(name = "board_content")
+    @Column(name = "board_content", columnDefinition = "TEXT")
     private String boardContent;
 
     @Column(name = "board_written_date")

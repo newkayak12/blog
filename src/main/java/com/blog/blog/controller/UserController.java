@@ -1,6 +1,7 @@
 package com.blog.blog.controller;
 
 import com.blog.blog.common.ResponseContainer.ResponseContainer;
+import com.blog.blog.common.authorizations.annotation.Auth;
 import com.blog.blog.common.exception.ServiceException;
 import com.blog.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -43,4 +44,19 @@ public class UserController {
     public ResponseContainer signOut(){
         return new ResponseContainer(200, "", userService.signOut());
     }
+
+    @RequestMapping(value = "/changeUserInfo", method = RequestMethod.PATCH)
+    @Auth
+    public ResponseContainer changeUserInfo(@RequestHeader(value = "authorization") Object authorization,  @RequestBody Map<String,Object> data){
+        data.put("userNo",  ((Map<String,Object>) authorization).get("userNo"));
+        Map<String, Object> result = null;
+        try {
+            result = userService.changeUserInfo(data);
+        } catch (ServiceException e) {
+            return new ResponseContainer(500, e.getMessage(), null);
+        }
+
+        return new ResponseContainer(200, "비밀번호 변경에 성공했습니다.", result);
+    }
+
 }
