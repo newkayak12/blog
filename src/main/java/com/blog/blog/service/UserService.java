@@ -41,11 +41,13 @@ public class UserService {
          * errorCheck
          */
         User user = userRepository.findUserByUserIdOrUserNickname(userId, userNickname);
+        log.warn("USERCHECK? : {}", user);
         UserDto userDto = Mapper.userMapper(user);
-
+        log.warn("!@#Condition1 {}", !Objects.isNull(userDto) && userDto.getUserId().equals(userId));
         if(!Objects.isNull(userDto) && userDto.getUserId().equals(userId)){
             throw new ServiceException("이미 존재하는 사용자입니다.");
         }
+        log.warn("!@#Condition2 {}", !Objects.isNull(userDto) && userDto.getUserNickname().equals(userNickname));
         if(!Objects.isNull(userDto) && userDto.getUserNickname().equals(userNickname)){
             throw new ServiceException("이미 존재하는 닉네임입니다.");
         }
@@ -58,7 +60,7 @@ public class UserService {
                 .userLastSignedDate(new Date())
                 .build();
 
-        log.warn("USER? {}", user);
+        log.warn("BEFORE SIGNUP {}", user);
         userRepository.save(user);
 
         return tokenMaker(user);
@@ -85,8 +87,8 @@ public class UserService {
         return result;
     }
 
-    public Map<String,Object> changeUserInfo(Map<String, Object> data) throws ServiceException {
-        Long userNo = (Long) data.get("userNo");
+    public Map<String,Object> changePassword(Map<String, Object> data) throws ServiceException {
+        Long userNo = Long.valueOf((Integer)data.get("userNo"));
         String userPassword = (String) data.get("userPassword");
         String newUserPassword = (String) data.get("newUserPassword");
         User user = userRepository.findUserByUserNo(userNo);
@@ -104,11 +106,29 @@ public class UserService {
         return tokenMaker(user);
     }
 
+    public Map<String, Object> changeNickname(Map<String, Object> data) throws ServiceException {
+        Long userNo = Long.valueOf((Integer) data.get("userNo"));
+        String userNickname = (String) data.get("userNickname");
+        User user = userRepository.findUserByUserNickname(userNickname);
+
+        if(!Objects.isNull(user)&&!user.getUserNo().equals(userNo)){
+            throw  new ServiceException("이미 존재하는 닉네임입니다.");
+        }
+        if(!Objects.isNull(user)&&user.getUserNo().equals(userNo)){
+            throw  new ServiceException("현재 닉네임과 동일합니다.");
+        }
+
+        user = userRepository.findUserByUserNo(userNo);
+        user.setUserNickname(userNickname);
+        userRepository.save(user);
+
+        return tokenMaker(user);
+    }
+
     public Map<String,Object> tokenMaker(User user){
 
         UserDto userDto = Mapper.userMapper(user);
-        log.warn("userDto ? {} ", userDto);
-        log.warn("SALT ? {}", Constants.SALT_VALUE);
+        userDto.setBoards(null);
         userDto.setUserPassword("");
         Map<String, Object> result = new HashMap<>();
         result.put("token", tokenManager.encrypt(userDto, Constants.SALT_VALUE));
@@ -116,6 +136,7 @@ public class UserService {
 
         return result;
     }
+
 
 
 }

@@ -24,7 +24,7 @@ public class UserController {
         try {
             result = userService.signUp(data);
         } catch (ServiceException e) {
-            new ResponseContainer(500, e.getMessage(), null);
+          return  new ResponseContainer(500, e.getMessage(), null);
         }
         return new ResponseContainer(200, "가입에 성공하였습니다.", result);
     }
@@ -35,7 +35,7 @@ public class UserController {
         try {
             result = userService.signIn(userId, userPassword);
         } catch (ServiceException e) {
-            return new ResponseContainer(500, "로그인에 실패했습니다.", null);
+            return new ResponseContainer(500, e.getMessage(), null);
         }
         return new ResponseContainer(200, "로그인에 성공하였습니다.", result);
     }
@@ -45,18 +45,31 @@ public class UserController {
         return new ResponseContainer(200, "", userService.signOut());
     }
 
-    @RequestMapping(value = "/changeUserInfo", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/changePassword", method = RequestMethod.PATCH)
     @Auth
-    public ResponseContainer changeUserInfo(@RequestHeader(value = "authorization") Object authorization,  @RequestBody Map<String,Object> data){
+    public ResponseContainer changePassword(@RequestHeader(value = "authorization") Object authorization,  @RequestBody Map<String,Object> data){
         data.put("userNo",  ((Map<String,Object>) authorization).get("userNo"));
         Map<String, Object> result = null;
         try {
-            result = userService.changeUserInfo(data);
+            result = userService.changePassword(data);
         } catch (ServiceException e) {
             return new ResponseContainer(500, e.getMessage(), null);
         }
 
         return new ResponseContainer(200, "비밀번호 변경에 성공했습니다.", result);
+    }
+
+    @RequestMapping(value = "/changeNickname", method = RequestMethod.PATCH)
+    @Auth
+    public ResponseContainer changeNickname(@RequestHeader(value = "authorization") Object authorization,  @RequestBody Map<String,Object> data){
+        data.put("userNo",  ((Map<String,Object>) authorization).get("userNo"));
+        Map<String,Object> result = null;
+        try {
+            result = userService.changeNickname(data);
+        } catch (ServiceException e) {
+            return new ResponseContainer(500, e.getMessage(),null);
+        }
+        return new ResponseContainer(200, "닉네임 변경에 성공했습니다.", result);
     }
 
 }

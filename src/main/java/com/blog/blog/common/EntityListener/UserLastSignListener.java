@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.PostLoad;
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.Objects;
 
 public class UserLastSignListener  {
     @Autowired
@@ -16,7 +17,8 @@ public class UserLastSignListener  {
 
     @PostLoad
     public void postLoad(User entity){
-        entity.setUserLastSignedDate(new Date());
-        userRepository.save(entity);
+        if(!Objects.isNull(entity)){
+            entity.setUserLastSignedDate(new Date());
+        }
     }
 }
