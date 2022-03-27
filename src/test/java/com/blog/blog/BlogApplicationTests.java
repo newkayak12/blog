@@ -1,6 +1,6 @@
 package com.blog.blog;
 
-import com.blog.blog.common.constants.Constants;
+import com.blog.blog.controller.BoardController;
 import com.blog.blog.controller.UserController;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,8 @@ import java.util.Map;
 class BlogApplicationTests {
     @Autowired
     UserController userController;
+    @Autowired
+    BoardController boardController;
 
     @Test
     void contextLoads() {
@@ -54,5 +56,14 @@ class BlogApplicationTests {
         Map<String,Object> data = new HashMap<>();
         data.put("userNickname", "test2");
         log.warn("Result : {}", userController.changeNickname(token, data));
+    }
+
+    @Test
+    void writeTest(){
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyTm8iOjgsInVzZXJOaWNrbmFtZSI6IlRFU1QxIiwidXNlcklkIjoiVEVTVDFAdGVzdC5jb20ifQ.Qq62Jgxn4J4qPKR8FYSPExhz5OuMvsxFcmAn0xhezuOrDCmR2F3gTHE9MyyEhE8RVzwyH3oU_WAmziQZve3frQ";
+        Map<String,Object> write = new HashMap<>();
+        write.put("boardTitle", "TEST1");
+        write.put("boardContent", "TEST_CONTENT_1");
+        log.warn("Result : {}", boardController.writeBoard(token, write));
     }
 }

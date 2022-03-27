@@ -42,6 +42,6 @@ public class User {
     @Column(name = "user_last_signed_date")
     private Date userLastSignedDate;
 
-    @OneToMany(mappedBy = "userNo")
-    private List<Board> boards = new ArrayList<>();
+//    @OneToMany(mappedBy = "userNo")
+//    private List<Board> boards = new ArrayList<>();
 }

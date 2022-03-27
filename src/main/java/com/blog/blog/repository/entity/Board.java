@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Setter
@@ -31,10 +32,12 @@ public class Board {
     private String boardContent;
 
     @Column(name = "board_written_date")
-    private Instant boardWrittenDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date boardWrittenDate;
 
     @Column(name = "board_updated_date")
-    private Instant boardUpdatedDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date boardUpdatedDate;
 
 
 }
