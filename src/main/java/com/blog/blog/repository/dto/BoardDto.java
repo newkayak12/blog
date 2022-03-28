@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Date;
 
 @Data
 public class BoardDto implements Serializable {
@@ -11,7 +12,7 @@ public class BoardDto implements Serializable {
     private  UserDto userNo;
     private  String boardTitle;
     private  String boardContent;
-    private  Instant boardWrittenDate;
-    private  Instant boardUpdatedDate;
+    private  Date boardWrittenDate;
+    private  Date boardUpdatedDate;
 
 }

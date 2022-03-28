@@ -9,7 +9,6 @@ import com.blog.blog.repository.entity.User;
 import com.blog.blog.repository.userRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,20 +23,25 @@ import java.util.*;
 @RequiredArgsConstructor
 public class BoardService {
     private final UserRepository userRepository;
-    @Autowired
-    private  BoardRepository boardRepository;
+    private final  BoardRepository boardRepository;
 
     public Map<String,Object> fetchList(Long userNo, Integer page, Integer limit, String searchText) {
         Pageable pageInfo = PageRequest.of(page,limit, Sort.by("boardWrittenDate").descending());
-//        List<Board> list =  boardRepository.fetchList(userNo, searchText, pageInfo);
+        log.warn("PAGE1 :: {}", pageInfo.getOffset());
+        log.warn("PAGE2 :: {}", pageInfo.getPageNumber());
+        log.warn("PAGE3 :: {}", pageInfo.getPageSize());
+
+
+        List<Board> list =  boardRepository.fetchList(userNo, searchText, pageInfo);
         Map<String,Object> result = new HashMap<>();
         result.put("pageInfo", pageInfo);
-//        result.put("list", list);
+        result.put("list", list);
         return result;
     }
 
     public BoardDto fetchOne(Long userNo, Long boardNo) {
         Board board = boardRepository.findBoardByBoardNoAndUserNo(boardNo, userRepository.findUserByUserNo(userNo));
+
         BoardDto boardDto = Mapper.boardMapper(board);
         return boardDto;
     }

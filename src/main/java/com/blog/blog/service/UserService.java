@@ -75,12 +75,12 @@ public class UserService {
     public Map<String, Object> signIn(String userId, String userPassword) throws ServiceException {
         User user = userRepository.findUserByUserId(userId);
         UserDto userDto = Mapper.userMapper(user);
-
+        log.warn("????? {}", user);
         if(Objects.isNull(userDto)){
-            throw new ServiceException("아이디 혹은 비밀번호가 틀렸습니다.");
+            throw new ServiceException("아이디 혹은 비밀번호가 틀렸습니다1.");
         }
         if(!bCryptPasswordEncoder.matches(userPassword, userDto.getUserPassword())){
-            throw  new ServiceException("아이디 혹은 비밀번호가 틀렸습니다.");
+            throw  new ServiceException("아이디 혹은 비밀번호가 틀렸습니다.2");
         }
 
         return tokenMaker(user);

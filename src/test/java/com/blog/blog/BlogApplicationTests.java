@@ -33,7 +33,7 @@ class BlogApplicationTests {
 
     @Test
     void signInTest(){
-        log.warn("Result? : {}", userController.signIn("TEST1@test.com", "qwer1234"));
+        log.warn("Result? : {}", userController.signIn("TEST2@test.com", "qwer1234"));
     }
 
     @Test
@@ -61,10 +61,12 @@ class BlogApplicationTests {
     @Test
     void writeTest(){
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyTm8iOjgsInVzZXJOaWNrbmFtZSI6IlRFU1QxIiwidXNlcklkIjoiVEVTVDFAdGVzdC5jb20ifQ.Qq62Jgxn4J4qPKR8FYSPExhz5OuMvsxFcmAn0xhezuOrDCmR2F3gTHE9MyyEhE8RVzwyH3oU_WAmziQZve3frQ";
-        Map<String,Object> write = new HashMap<>();
-        write.put("boardTitle", "TEST1");
-        write.put("boardContent", "TEST_CONTENT_1");
-        log.warn("Result : {}", boardController.writeBoard(token, write));
+        for(int i =2; i<24; i++){
+            Map<String,Object> write = new HashMap<>();
+            write.put("boardTitle", "TEST"+i);
+            write.put("boardContent", "TEST_CONTENT_"+i);
+            log.warn("Result : {}", boardController.writeBoard(token, write));
+        }
     }
 
     @Test
@@ -72,9 +74,25 @@ class BlogApplicationTests {
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyTm8iOjgsInVzZXJOaWNrbmFtZSI6IlRFU1QxIiwidXNlcklkIjoiVEVTVDFAdGVzdC5jb20ifQ.Qq62Jgxn4J4qPKR8FYSPExhz5OuMvsxFcmAn0xhezuOrDCmR2F3gTHE9MyyEhE8RVzwyH3oU_WAmziQZve3frQ";
         Map<String,Object> write = new HashMap<>();
         write.put("boardNo", 1);
-        write.put("boardTitle", "TEST1!");
-        write.put("boardContent", "TEST_CONTENT_1!");
+        write.put("boardTitle", "TEST1");
+        write.put("boardContent", "TEST_CONTENT_1");
         log.warn("Result : {}", boardController.modifyBoard(token, write));
+    }
+
+    @Test
+    void fetchOneTest(){
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyTm8iOjgsInVzZXJOaWNrbmFtZSI6IlRFU1QxIiwidXNlcklkIjoiVEVTVDFAdGVzdC5jb20ifQ.Qq62Jgxn4J4qPKR8FYSPExhz5OuMvsxFcmAn0xhezuOrDCmR2F3gTHE9MyyEhE8RVzwyH3oU_WAmziQZve3frQ";
+        Integer boardNo = 1;
+        log.warn("Result : {}", boardController.fetchOne(token, boardNo));
+    }
+
+    @Test
+    void fetchListTest(){
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyTm8iOjgsInVzZXJOaWNrbmFtZSI6IlRFU1QxIiwidXNlcklkIjoiVEVTVDFAdGVzdC5jb20ifQ.Qq62Jgxn4J4qPKR8FYSPExhz5OuMvsxFcmAn0xhezuOrDCmR2F3gTHE9MyyEhE8RVzwyH3oU_WAmziQZve3frQ";
+        Integer page = 0;
+        Integer limit = 10;
+        String searchText="";
+        log.warn("Result : {}", boardController.fetchList(token, page,limit,searchText));
     }
 
 }

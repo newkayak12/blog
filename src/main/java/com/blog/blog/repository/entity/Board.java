@@ -1,5 +1,6 @@
 package com.blog.blog.repository.entity;
 
+import com.blog.blog.repository.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
+@ToString
 @Table(name = "board")
 public class Board {
     @Id

@@ -21,7 +21,7 @@ public class BoardController {
 
     @RequestMapping(value = "/fetchList", method = RequestMethod.GET)
     @Auth
-    public ResponseContainer fetchList(@RequestHeader(value = "Authorization") Object authorization, @RequestParam Integer page, @RequestParam Integer limit, @RequestParam String searchText){
+    public ResponseContainer fetchList(@RequestHeader(value = "Authorization", required = false) Object authorization, @RequestParam Integer page, @RequestParam Integer limit, @RequestParam String searchText){
        Long _userNo = Long.valueOf((Integer)((Map<String,Object>) authorization).get("userNo"));
         return new ResponseContainer(200, "", boardService.fetchList(_userNo, page, limit, searchText));
     }
