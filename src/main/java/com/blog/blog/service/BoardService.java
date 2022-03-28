@@ -39,9 +39,11 @@ public class BoardService {
         return result;
     }
 
-    public BoardDto fetchOne(Long userNo, Long boardNo) {
+    public BoardDto fetchOne(Long userNo, Long boardNo) throws ServiceException {
         Board board = boardRepository.findBoardByBoardNoAndUserNo(boardNo, userRepository.findUserByUserNo(userNo));
-
+        if(Objects.isNull(board)){
+            throw new ServiceException("게시글이 존재하지 않습니다.");
+        }
         BoardDto boardDto = Mapper.boardMapper(board);
         return boardDto;
     }

@@ -30,7 +30,13 @@ public class BoardController {
     public ResponseContainer fetchOne(@RequestHeader(value = "Authorization") Object authorization, @RequestParam Integer boardNo){
         Long _boardNo = Long.valueOf(boardNo);
         Long _userNo = Long.valueOf((Integer)((Map<String,Object>) authorization).get("userNo"));
-        return new ResponseContainer(200, "", boardService.fetchOne(_userNo,_boardNo));
+        BoardDto result = null;
+        try {
+            result = boardService.fetchOne(_userNo,_boardNo);
+        } catch (ServiceException e) {
+            return new ResponseContainer(500, e.getMessage(),null);
+        }
+        return new ResponseContainer(200, "",result );
     }
     @RequestMapping(value = "/writeBoard", method = RequestMethod.POST)
     @Auth
