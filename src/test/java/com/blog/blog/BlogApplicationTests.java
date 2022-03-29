@@ -61,7 +61,7 @@ class BlogApplicationTests {
     @Test
     void writeTest(){
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyTm8iOjgsInVzZXJOaWNrbmFtZSI6IlRFU1QxIiwidXNlcklkIjoiVEVTVDFAdGVzdC5jb20ifQ.Qq62Jgxn4J4qPKR8FYSPExhz5OuMvsxFcmAn0xhezuOrDCmR2F3gTHE9MyyEhE8RVzwyH3oU_WAmziQZve3frQ";
-        for(int i =2; i<24; i++){
+        for(int i =0; i<10; i++){
             Map<String,Object> write = new HashMap<>();
             write.put("boardTitle", "TEST"+i);
             write.put("boardContent", "TEST_CONTENT_"+i);

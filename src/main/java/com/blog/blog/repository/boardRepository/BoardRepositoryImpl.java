@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.blog.blog.repository.entity.QBoard.board;
@@ -35,5 +36,16 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
                 .limit(page.getPageSize())
                 .fetchResults();
         return new PageImpl<Board>(result.getResults(), page, result.getTotal());
+    }
+
+    @Override
+    public Long boardCount(Date start, Date end, Long userNo) {
+        return from(board)
+                .where(
+                        board.userNo.userNo.eq(userNo)
+                        .and(board.boardWrittenDate.goe(start))
+                        .and(board.boardWrittenDate.loe(end))
+                )
+                .fetchCount();
     }
 }
