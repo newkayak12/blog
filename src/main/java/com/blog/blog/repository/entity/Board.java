@@ -22,7 +22,7 @@ public class Board {
     @Column(name = "board_no", nullable = false)
     private Long boardNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_no")
     private User userNo;
 

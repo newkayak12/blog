@@ -7,8 +7,10 @@ import com.blog.blog.repository.dto.BoardDto;
 import com.blog.blog.repository.entity.Board;
 import com.blog.blog.repository.entity.User;
 import com.blog.blog.repository.userRepository.UserRepository;
+import com.querydsl.core.QueryResults;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,12 +32,12 @@ public class BoardService {
         log.warn("PAGE1 :: {}", pageInfo.getOffset());
         log.warn("PAGE2 :: {}", pageInfo.getPageNumber());
         log.warn("PAGE3 :: {}", pageInfo.getPageSize());
-
-
-        List<Board> list =  boardRepository.fetchList(userNo, searchText, pageInfo);
+        Page<Board> list =  boardRepository.fetchList(userNo, searchText, pageInfo);
         Map<String,Object> result = new HashMap<>();
         result.put("pageInfo", pageInfo);
-        result.put("list", list);
+        result.put("hasNext", list.hasNext());
+        result.put("totalCount", list.getTotalElements());
+        result.put("list", list.getContent());
         return result;
     }
 
