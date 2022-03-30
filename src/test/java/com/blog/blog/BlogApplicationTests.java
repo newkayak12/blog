@@ -1,13 +1,18 @@
 package com.blog.blog;
 
+import com.blog.blog.common.ResponseContainer.ResponseContainer;
 import com.blog.blog.controller.BoardController;
+import com.blog.blog.controller.JandiController;
 import com.blog.blog.controller.UserController;
+import com.blog.blog.repository.entity.Jandi;
+import com.blog.blog.service.JandiService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
@@ -17,6 +22,10 @@ class BlogApplicationTests {
     UserController userController;
     @Autowired
     BoardController boardController;
+    @Autowired
+    JandiService jandiService;
+    @Autowired
+    JandiController jandiController;
 
     @Test
     void contextLoads() {
@@ -100,6 +109,17 @@ class BlogApplicationTests {
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyTm8iOjgsInVzZXJOaWNrbmFtZSI6IlRFU1QxIiwidXNlcklkIjoiVEVTVDFAdGVzdC5jb20ifQ.Qq62Jgxn4J4qPKR8FYSPExhz5OuMvsxFcmAn0xhezuOrDCmR2F3gTHE9MyyEhE8RVzwyH3oU_WAmziQZve3frQ";
         Integer boardNo = 25;
         log.warn("Result : {}", boardController.deleteBoard(token,boardNo));
+    }
+
+    @Test
+    void fetchJandiTest(){
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyTm8iOjgsInVzZXJOaWNrbmFtZSI6IlRFU1QxIiwidXNlcklkIjoiVEVTVDFAdGVzdC5jb20ifQ.Qq62Jgxn4J4qPKR8FYSPExhz5OuMvsxFcmAn0xhezuOrDCmR2F3gTHE9MyyEhE8RVzwyH3oU_WAmziQZve3frQ";
+        Integer gap = 30;
+        ResponseContainer responseContainer = jandiController.fetchList(token, gap);
+        log.warn("Result : {}", responseContainer);
+        List<Integer> jandiList = (List<Integer>)responseContainer.getData();
+        log.warn("LIST::::::::");
+        jandiList.stream().forEach(System.out::println);
     }
 
 }

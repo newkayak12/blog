@@ -5,6 +5,7 @@ import com.blog.blog.common.mapper.Mapper;
 import com.blog.blog.repository.boardRepository.BoardRepository;
 import com.blog.blog.repository.dto.BoardDto;
 import com.blog.blog.repository.entity.Board;
+import com.blog.blog.repository.entity.Jandi;
 import com.blog.blog.repository.entity.User;
 import com.blog.blog.repository.userRepository.UserRepository;
 import com.querydsl.core.QueryResults;
@@ -26,6 +27,7 @@ import java.util.*;
 public class BoardService {
     private final UserRepository userRepository;
     private final  BoardRepository boardRepository;
+    private final JandiService jandiService;
 
     public Map<String,Object> fetchList(Long userNo, Integer page, Integer limit, String searchText) {
         Pageable pageInfo = PageRequest.of(page,limit, Sort.by("boardWrittenDate").descending());
@@ -67,6 +69,7 @@ public class BoardService {
         if(Objects.isNull(board.getBoardNo())){
             throw new ServiceException("작성에 실패했습니다.");
         }
+        jandiService.plantJani(user);
         return Mapper.boardMapper(board);
     }
 
