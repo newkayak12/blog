@@ -25,7 +25,7 @@ public class TokenManager {
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer("Server")
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime()+ Duration.ofHours(24).toHours()))
+                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24)))
                 .setClaims(user)
                 .signWith(SignatureAlgorithm.HS512, salt.getBytes())
                 .compact();
