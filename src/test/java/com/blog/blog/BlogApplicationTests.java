@@ -107,7 +107,7 @@ class BlogApplicationTests {
     @Test
     void deleteTest(){
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyTm8iOjgsInVzZXJOaWNrbmFtZSI6IlRFU1QxIiwidXNlcklkIjoiVEVTVDFAdGVzdC5jb20ifQ.Qq62Jgxn4J4qPKR8FYSPExhz5OuMvsxFcmAn0xhezuOrDCmR2F3gTHE9MyyEhE8RVzwyH3oU_WAmziQZve3frQ";
-        Integer boardNo = 25;
+        Integer boardNo = 30;
         log.warn("Result : {}", boardController.deleteBoard(token,boardNo));
     }
 
