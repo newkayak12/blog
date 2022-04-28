@@ -78,7 +78,7 @@ public class BoardService {
         if(Objects.isNull(user)){
             throw new ServiceException("잘못된 접근입니다.");
         }
-        Board board = boardRepository.findBoardByBoardNoAndUserNo(Long.valueOf((Integer) data.get("boardNo")), user);
+        Board board = boardRepository.findBoardByBoardNoAndUserNo(Long.valueOf(Integer.parseInt((String)data.get("boardNo"))), user);
         if(Objects.isNull(board)){
             throw new ServiceException("잘못된 접근입니다.");
         }

@@ -34,6 +34,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
                 .where(builder)
                 .offset(page.getOffset())
                 .limit(page.getPageSize())
+                .orderBy(board.boardWrittenDate.desc())
                 .fetchResults();
         return new PageImpl<Board>(result.getResults(), page, result.getTotal());
     }
